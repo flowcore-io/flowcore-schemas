@@ -1,0 +1,326 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FlowCore Platform Configuration Schema",
+  "description": "Schema for configuring scenarios and datacores in the FlowCore platform.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "description": "The version of the configuration schema."
+    },
+    "tenant": {
+      "type": "string",
+      "description": "Identifier for the tenant within the FlowCore platform."
+    },
+    "dataCore": {
+      "type": "object",
+      "description": "Settings and configurations specific to the data core.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name assigned to the data core."
+        },
+        "deleteProtection": {
+          "type": "boolean",
+          "description": "Flag indicating whether delete protection is enabled for the data core."
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Flag indicating whether the data core is publicly accessible."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the data core."
+        },
+        "flowTypes": {
+          "type": "object",
+          "description": "Different kinds of flow types within the data core.",
+          "additionalProperties": {
+            "type": "object",
+            "description": "Specific configuration for each flow type.",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Description of the flow type."
+              },
+              "eventTypes": {
+                "type": "object",
+                "description": "Various event types associated with the flow type.",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "Configuration for each event type.",
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "Description of the event type."
+                    }
+                  },
+                  "required": ["description"]
+                }
+              }
+            },
+            "required": ["description", "eventTypes"]
+          }
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "description": "Setup and configurations related to a specific scenario.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the scenario."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the scenario."
+        },
+        "strands": {
+          "type": "object",
+          "description": "Different strands within the scenario.",
+          "additionalProperties": {
+            "type": "object",
+            "description": "Settings pertinent to each strand.",
+            "properties": {
+              "data": {
+                "type": "object",
+                "description": "Data-specific configurations for the strand.",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "Configuration for each data type within the strand.",
+                  "properties": {
+                    "dataCore": {
+                      "type": "string",
+                      "description": "Associated data core for the specific data type."
+                    },
+                    "flowType": {
+                      "type": "string",
+                      "description": "Associated flow type for the specific data type."
+                    },
+                    "eventTypes": {
+                      "type": "array",
+                      "description": "List of event types applicable to this data type.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["dataCore", "flowType", "eventTypes"]
+                }
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the strand."
+              },
+              "endpoint": {
+                "type": "object",
+                "description": "Configuration for the endpoint.",
+                "properties": {
+                  "additionalProperties": {
+                    "type": "object",
+                    "description": "Endpoint configurations including URL and headers.",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "URL of the endpoint."
+                      },
+                      "headers": {
+                        "type": "array",
+                        "description": "Headers to be included with the endpoint.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the header."
+                            },
+                            "type": {
+                              "type": "string",
+                              "description": "Type of the header.",
+                              "enum": ["value", "secret"]
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "Value of the header."
+                            }
+                          },
+                          "required": ["name", "type", "value"]
+                        }
+                      }
+                    },
+                    "required": ["url"]
+                  }
+                }
+              },
+              "transformers": {
+                "type": "object",
+                "description": "Configuration for transformers within the strand.",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "Settings and configurations for each transformer.",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "description": "Image used by the transformer."
+                    },
+                    "environment": {
+                      "type": "array",
+                      "description": "Environment variables required for the transformer.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the environment variable."
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of the environment variable."
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the environment variable."
+                          }
+                        },
+                        "required": ["name", "type", "value"]
+                      }
+                    },
+                    "command": {
+                      "type": "string",
+                      "description": "Command to be executed by the transformer."
+                    },
+                    "dependsOn": {
+                      "type": "array",
+                      "description": "List of dependencies for the transformer.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["image", "environment", "command"]
+                }
+              },
+              "catch": {
+                "type": "object",
+                "description": "Configuration for the catch step in the workflow.",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "description": "Image used for the catch step."
+                  },
+                  "environment": {
+                    "type": "array",
+                    "description": "Environment variables for the catch step.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the environment variable."
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "Type of the environment variable."
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Value of the environment variable."
+                        }
+                      },
+                      "required": ["name", "type", "value"]
+                    }
+                  },
+                  "command": {
+                    "type": "string",
+                    "description": "Command to be executed during the catch step."
+                  }
+                },
+                "required": ["image", "environment", "command"]
+              },
+              "supportServices": {
+                "type": "object",
+                "description": "Configurations for support services within the strand.",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "Specific configuration for each support service.",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "description": "Image for the support service."
+                    },
+                    "environment": {
+                      "type": "array",
+                      "description": "Environment variables for the support service.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the environment variable."
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of the environment variable."
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the environment variable."
+                          }
+                        },
+                        "required": ["name", "type", "value"]
+                      }
+                    },
+                    "ports": {
+                      "type": "array",
+                      "description": "Ports exposed by the support service.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "port": {
+                            "type": "integer",
+                            "description": "Port number."
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "Protocol used on the port."
+                          }
+                        },
+                        "required": ["port", "protocol"]
+                      }
+                    }
+                  },
+                  "required": ["image", "environment", "ports"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "version": {
+        "const": 2,
+        "description": "Condition: If the version is 2."
+      }
+    }
+  },
+  "then": {
+    "description": "Schema requirements for version 2.",
+    "required": ["version", "tenant", "dataCore", "scenario"],
+    "properties": {
+      "dataCore": {
+        "required": ["name", "deleteProtection", "isPublic", "description", "flowTypes"]
+      },
+      "scenario": {
+        "required": ["name", "description", "strands"]
+      }
+    }
+  },
+  "else": {
+    "description": "Schema requirements for versions other than 2.",
+    "required": ["version"]
+  }
+}
