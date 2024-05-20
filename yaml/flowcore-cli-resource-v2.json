@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/bowerrc",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "https://flowcore-io.github.io/flowcore-schemas/yaml/flowcore-cli-resource-v2.json",
   "title": "FlowCore Platform Configuration Schema",
   "description": "Schema for configuring scenarios and datacores in the FlowCore platform.",
