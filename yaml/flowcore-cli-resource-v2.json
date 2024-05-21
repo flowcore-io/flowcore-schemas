@@ -294,7 +294,8 @@
                   "required": ["image", "environment", "ports"]
                 }
               }
-            }
+            },
+            "required": ["data", "description"]
           }
         }
       }
