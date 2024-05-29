@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "https://flowcore-io.github.io/flowcore-schemas/yaml/flowcore-cli-resource-v2.json",
-  "title": "FlowCore Platform Configuration Schema",
+  "title": "Flowcore Platform Configuration Schema",
   "description": "Schema for configuring scenarios and datacores in the FlowCore platform.",
   "type": "object",
   "properties": {
@@ -238,66 +238,66 @@
                   }
                 },
                 "required": ["image", "environment", "command"]
-              },
-              "supportServices": {
-                "type": "object",
-                "description": "Configurations for support services within the strand.",
-                "additionalProperties": {
-                  "type": "object",
-                  "description": "Specific configuration for each support service.",
-                  "properties": {
-                    "image": {
-                      "type": "string",
-                      "description": "Image for the support service."
-                    },
-                    "environment": {
-                      "type": "array",
-                      "description": "Environment variables for the support service.",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "Name of the environment variable."
-                          },
-                          "type": {
-                            "type": "string",
-                            "description": "Type of the environment variable."
-                          },
-                          "value": {
-                            "type": "string",
-                            "description": "Value of the environment variable."
-                          }
-                        },
-                        "required": ["name", "type", "value"]
-                      }
-                    },
-                    "ports": {
-                      "type": "array",
-                      "description": "Ports exposed by the support service.",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "port": {
-                            "type": "integer",
-                            "description": "Port number."
-                          },
-                          "protocol": {
-                            "type": "string",
-                            "description": "Protocol used on the port."
-                          }
-                        },
-                        "required": ["port", "protocol"]
-                      }
-                    }
-                  },
-                  "required": ["image", "environment", "ports"]
-                }
               }
             },
             "required": ["data", "description"]
           }
         }
+      }
+    },
+    "supportServices": {
+      "type": "object",
+      "description": "Configurations for support services within the strand.",
+      "additionalProperties": {
+        "type": "object",
+        "description": "Specific configuration for each support service.",
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Image for the support service."
+          },
+          "environment": {
+            "type": "array",
+            "description": "Environment variables for the support service.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the environment variable."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of the environment variable."
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value of the environment variable."
+                }
+              },
+              "required": ["name", "type", "value"]
+            }
+          },
+          "ports": {
+            "type": "array",
+            "description": "Ports exposed by the support service.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "port": {
+                  "type": "integer",
+                  "description": "Port number."
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "Protocol used on the port."
+                }
+              },
+              "required": ["port", "protocol"]
+            }
+          }
+        },
+        "required": ["image", "environment", "ports"]
       }
     }
   },
