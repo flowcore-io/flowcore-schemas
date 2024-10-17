@@ -79,7 +79,7 @@
               "resource": {
                 "type": "string",
                 "description": "The resource of the statement",
-                "examples": ["*"]
+                "examples": ["frn::tenant:<resource>/<id> | *"]
               },
               "action": {
                 "oneOf": [
