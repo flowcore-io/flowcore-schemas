@@ -1,134 +1,131 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["apiVersion", "kind", "metadata"],
-  "properties": {
-    "apiVersion": {
-      "type": "string"
-    },
-    "kind": {
-      "type": "string"
-    },
-    "metadata": {
-      "type": "object",
-      "required": ["name"],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "tenant": {
-          "type": "string"
-        }
-      }
-    }
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "apiVersion": { "const": "iam.flowcore.io/v1" },
-          "kind": { "const": "Policy" }
-        }
-      },
-      "then": {
-        "properties": {
-          "spec": { "$ref": "#/definitions/PolicySpec" }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "apiVersion": { "const": "iam.flowcore.io/v1" },
-          "kind": { "const": "Role" }
-        }
-      },
-      "then": {
-        "properties": {
-          "spec": { "$ref": "#/definitions/RoleSpec" }
-        }
-      }
-    }
-  ],
-  "definitions": {
-    "PolicySpec": {
-      "type": "object",
-      "required": ["name", "version", "policyDocuments"],
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the policy",
-          "examples": ["My Policy"]
-        },
-        "version": {
-          "type": "string",
-          "description": "The version of the policy",
-          "default": "1.0.0",
-          "examples": ["1.0.0"]
-        },
-        "policyDocuments": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "statementId": {
-                "type": "string",
-                "description": "The id of the statement",
-                "examples": ["my-statement-id"]
-              },
-              "resource": {
-                "type": "string",
-                "description": "The resource of the statement",
-                "examples": ["frn::tenant:<resource>/<id> | *"]
-              },
-              "action": {
-                "oneOf": [
-                  { "type": "string" },
-                  { "type": "array", "items": { "type": "string" } }
-                ],
-                "description": "The action of the statement",
-                "examples": ["READ", "WRITE", "INGEST", "FETCH", "*"]
-              }
-            },
-            "required": ["resource", "action"]
-          }
-        },
-        "description": {
-          "type": "string",
-          "description": "The description of the policy",
-          "examples": ["This is my policy"]
-        },
-        "principal": {
-          "type": "string",
-          "description": "The principal role that can access the resource",
-          "examples": ["frn::tenant/role/ddbcd838-7b05-4868-96ae-7bdc9a05067c"]
-        },
-        "flowcoreManaged": {
-          "type": "boolean",
-          "description": "If the policy is managed by flowcore",
-          "examples": [false, true]
-        }
-      }
-    },
-    "RoleSpec": {
-      "type": "object",
-      "required": ["replicas", "selector", "template"],
-      "properties": {
-        "replicas": { "type": "integer" },
-        "selector": {
-          "type": "object",
-          "properties": {
-            "matchLabels": { "type": "object" }
-          }
-        },
-        "template": {
-          "type": "object",
-          "properties": {
-            "metadata": { "type": "object" },
-            "spec": { "$ref": "#/definitions/RoleSpec" }
-          }
-        }
-      }
-    }
-  }
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": ["apiVersion", "kind", "metadata"],
+	"properties": {
+		"apiVersion": {
+			"type": "string"
+		},
+		"kind": {
+			"type": "string"
+		},
+		"metadata": {
+			"type": "object",
+			"required": ["name"],
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the resource"
+				},
+				"tenant": {
+					"type": "string",
+					"description": "The owner of the resource"
+				}
+			}
+		}
+	},
+	"allOf": [
+		{
+			"if": {
+				"properties": {
+					"apiVersion": { "const": "iam.flowcore.io/v1" },
+					"kind": { "const": "Policy" }
+				}
+			},
+			"then": {
+				"properties": {
+					"spec": { "$ref": "#/definitions/PolicySpec" }
+				}
+			}
+		},
+		{
+			"if": {
+				"properties": {
+					"apiVersion": { "const": "iam.flowcore.io/v1" },
+					"kind": { "const": "Role" }
+				}
+			},
+			"then": {
+				"properties": {
+					"spec": { "$ref": "#/definitions/RoleSpec" }
+				}
+			}
+		}
+	],
+	"definitions": {
+		"PolicySpec": {
+			"type": "object",
+			"required": ["version", "policyDocuments"],
+			"properties": {
+				"version": {
+					"type": "string",
+					"description": "The version of the policy",
+					"default": "1.0.0",
+					"examples": ["1.0.0"]
+				},
+				"policyDocuments": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"statementId": {
+								"type": "string",
+								"description": "The id of the statement",
+								"examples": ["my-statement-id"]
+							},
+							"resource": {
+								"type": "string",
+								"description": "The resource of the statement",
+								"examples": ["frn::tenant:<resource>/<id> | *"]
+							},
+							"action": {
+								"oneOf": [
+									{ "type": "string" },
+									{ "type": "array", "items": { "type": "string" } }
+								],
+								"description": "The action of the statement",
+								"examples": ["READ", "WRITE", "INGEST", "FETCH", "*"]
+							}
+						},
+						"required": ["resource", "action"]
+					}
+				},
+				"description": {
+					"type": "string",
+					"description": "The description of the policy",
+					"examples": ["This is my policy"]
+				},
+				"principal": {
+					"type": "string",
+					"description": "The principal role that can access the resource",
+					"examples": ["frn::tenant/role/ddbcd838-7b05-4868-96ae-7bdc9a05067c"]
+				},
+				"flowcoreManaged": {
+					"type": "boolean",
+					"description": "If the policy is managed by flowcore",
+					"examples": [false, true]
+				}
+			}
+		},
+		"RoleSpec": {
+			"type": "object",
+			"required": ["replicas", "selector", "template"],
+			"properties": {
+				"replicas": { "type": "integer" },
+				"selector": {
+					"type": "object",
+					"properties": {
+						"matchLabels": { "type": "object" }
+					}
+				},
+				"template": {
+					"type": "object",
+					"properties": {
+						"metadata": { "type": "object" },
+						"spec": { "$ref": "#/definitions/RoleSpec" }
+					}
+				}
+			}
+		}
+	}
 }
