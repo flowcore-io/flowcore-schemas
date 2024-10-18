@@ -160,26 +160,30 @@
 			"required": ["role"],
 			"properties": {
 				"role": { "type": "string" },
-				"users": { "type": "array", "items": { "type": "string" } },
-				"keys": { "type": "array", "items": { "type": "string" } }
-			},
-			"anyOf": [
-				{ "required": ["users"] },
-				{ "required": ["keys"] }
-			]
+				"subject": {
+					"type": "object",
+					"properties": {
+						"type": { "type": "string", "enum": ["user", "key"] },
+						"id": { "type": "string" }
+					},
+					"required": ["type", "id"]
+				}
+			}
 		},
 		"PolicyBindingSpec": {
 			"type": "object",
 			"required": ["policy"],
 			"properties": {
 				"policy": { "type": "string" },
-				"users": { "type": "array", "items": { "type": "string" } },
-				"keys": { "type": "array", "items": { "type": "string" } }
-			},
-			"anyOf": [
-				{ "required": ["users"] },
-				{ "required": ["keys"] }
-			]
+				"subject": {
+					"type": "object",
+					"properties": {
+						"type": { "type": "string", "enum": ["user", "key"] },
+						"id": { "type": "string" }
+					},
+					"required": ["type", "id"]
+				}
+			}
 		}
 	}
 }
