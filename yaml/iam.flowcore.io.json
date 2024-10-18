@@ -50,6 +50,19 @@
 					"spec": { "$ref": "#/definitions/RoleSpec" }
 				}
 			}
+		},
+		{
+			"if": {
+				"properties": {
+					"apiVersion": { "const": "iam.flowcore.io/v1" },
+					"kind": { "const": "RoleBinding" }
+				}
+			},
+			"then": {
+				"properties": {
+					"spec": { "$ref": "#/definitions/RoleBindingSpec" }
+				}
+			}
 		}
 	],
 	"definitions": {
@@ -109,23 +122,38 @@
 		},
 		"RoleSpec": {
 			"type": "object",
-			"required": ["replicas", "selector", "template"],
+			"required": ["policies"],
 			"properties": {
-				"replicas": { "type": "integer" },
-				"selector": {
-					"type": "object",
-					"properties": {
-						"matchLabels": { "type": "object" }
+				"policies": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"description": "The name of the policy"
 					}
 				},
-				"template": {
-					"type": "object",
-					"properties": {
-						"metadata": { "type": "object" },
-						"spec": { "$ref": "#/definitions/RoleSpec" }
-					}
+				"description": {
+					"type": "string",
+					"description": "The description of the role"
+				},
+				"flowcoreManaged": {
+					"type": "boolean",
+					"description": "If the role is managed by flowcore",
+					"examples": [false, true]
 				}
 			}
+		},
+		"RoleBindingSpec": {
+			"type": "object",
+			"required": ["role"],
+			"properties": {
+				"role": { "type": "string" },
+				"users": { "type": "array", "items": { "type": "string" } },
+				"keys": { "type": "array", "items": { "type": "string" } }
+			},
+			"anyOf": [
+				{ "required": ["users"] },
+				{ "required": ["keys"] }
+			]
 		}
 	}
 }
