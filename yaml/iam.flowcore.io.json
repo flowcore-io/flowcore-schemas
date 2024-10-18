@@ -63,6 +63,19 @@
 					"spec": { "$ref": "#/definitions/RoleBindingSpec" }
 				}
 			}
+		},
+		{
+			"if": {
+				"properties": {
+					"apiVersion": { "const": "iam.flowcore.io/v1" },
+					"kind": { "const": "PolicyBinding" }
+				}
+			},
+			"then": {
+				"properties": {
+					"spec": { "$ref": "#/definitions/PolicyBindingSpec" }
+				}
+			}
 		}
 	],
 	"definitions": {
@@ -147,6 +160,19 @@
 			"required": ["role"],
 			"properties": {
 				"role": { "type": "string" },
+				"users": { "type": "array", "items": { "type": "string" } },
+				"keys": { "type": "array", "items": { "type": "string" } }
+			},
+			"anyOf": [
+				{ "required": ["users"] },
+				{ "required": ["keys"] }
+			]
+		},
+		"PolicyBindingSpec": {
+			"type": "object",
+			"required": ["policy"],
+			"properties": {
+				"policy": { "type": "string" },
 				"users": { "type": "array", "items": { "type": "string" } },
 				"keys": { "type": "array", "items": { "type": "string" } }
 			},
