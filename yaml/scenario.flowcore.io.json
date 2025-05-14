@@ -1,0 +1,86 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": [
+		"apiVersion",
+		"kind",
+		"metadata"
+	],
+	"properties": {
+		"apiVersion": {
+			"type": "string"
+		},
+		"kind": {
+			"type": "string"
+		},
+		"metadata": {
+			"type": "object",
+			"required": [
+				"name",
+				"tenant"
+			],
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the resource"
+				},
+				"tenant": {
+					"type": "string",
+					"description": "The owner of the resource (the tenant name)"
+				}
+			}
+		}
+	},
+	"allOf": [
+		{
+			"if": {
+				"properties": {
+					"apiVersion": {
+						"const": "scenario.flowcore.io/v1"
+					},
+					"kind": {
+						"const": "Scenario"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"spec": {
+						"$ref": "#/definitions/ScenarioSpec"
+					}
+				}
+			}
+		}
+	],
+	"definitions": {
+		"ScenarioSpec": {
+			"type": "object",
+			"required": [
+				"name"
+			],
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the scenario (unique for the tenant, alphanumeric, lowercase and dash allowed)",
+					"examples": [
+						"my-scenario"
+					]
+				},
+				"displayName": {
+					"type": "string",
+					"description": "The display name of the scenario",
+					"examples": [
+						"My Scenario Display Name"
+					]
+				},
+				"description": {
+					"type": "string",
+					"description": "The description of the scenario",
+					"examples": [
+						"This is my scenario"
+					]
+				}
+			}
+		}
+	}
+}
