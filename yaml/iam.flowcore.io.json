@@ -1,7 +1,11 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
-	"required": ["apiVersion", "kind", "metadata"],
+	"required": [
+		"apiVersion",
+		"kind",
+		"metadata"
+	],
 	"properties": {
 		"apiVersion": {
 			"type": "string"
@@ -11,7 +15,10 @@
 		},
 		"metadata": {
 			"type": "object",
-			"required": ["name"],
+			"required": [
+				"name",
+				"tenant"
+			],
 			"properties": {
 				"name": {
 					"type": "string",
@@ -28,52 +35,76 @@
 		{
 			"if": {
 				"properties": {
-					"apiVersion": { "const": "iam.flowcore.io/v1" },
-					"kind": { "const": "Policy" }
+					"apiVersion": {
+						"const": "iam.flowcore.io/v1"
+					},
+					"kind": {
+						"const": "Policy"
+					}
 				}
 			},
 			"then": {
 				"properties": {
-					"spec": { "$ref": "#/definitions/PolicySpec" }
+					"spec": {
+						"$ref": "#/definitions/PolicySpec"
+					}
 				}
 			}
 		},
 		{
 			"if": {
 				"properties": {
-					"apiVersion": { "const": "iam.flowcore.io/v1" },
-					"kind": { "const": "Role" }
+					"apiVersion": {
+						"const": "iam.flowcore.io/v1"
+					},
+					"kind": {
+						"const": "Role"
+					}
 				}
 			},
 			"then": {
 				"properties": {
-					"spec": { "$ref": "#/definitions/RoleSpec" }
+					"spec": {
+						"$ref": "#/definitions/RoleSpec"
+					}
 				}
 			}
 		},
 		{
 			"if": {
 				"properties": {
-					"apiVersion": { "const": "iam.flowcore.io/v1" },
-					"kind": { "const": "RoleBinding" }
+					"apiVersion": {
+						"const": "iam.flowcore.io/v1"
+					},
+					"kind": {
+						"const": "RoleBinding"
+					}
 				}
 			},
 			"then": {
 				"properties": {
-					"spec": { "$ref": "#/definitions/RoleBindingSpec" }
+					"spec": {
+						"$ref": "#/definitions/RoleBindingSpec"
+					}
 				}
 			}
 		},
 		{
 			"if": {
 				"properties": {
-					"apiVersion": { "const": "iam.flowcore.io/v1" },
-					"kind": { "const": "PolicyBinding" }
+					"apiVersion": {
+						"const": "iam.flowcore.io/v1"
+					},
+					"kind": {
+						"const": "PolicyBinding"
+					}
 				}
 			},
 			"then": {
 				"properties": {
-					"spec": { "$ref": "#/definitions/PolicyBindingSpec" }
+					"spec": {
+						"$ref": "#/definitions/PolicyBindingSpec"
+					}
 				}
 			}
 		}
@@ -81,13 +112,18 @@
 	"definitions": {
 		"PolicySpec": {
 			"type": "object",
-			"required": ["version", "policyDocuments"],
+			"required": [
+				"version",
+				"policyDocuments"
+			],
 			"properties": {
 				"version": {
 					"type": "string",
 					"description": "The version of the policy",
 					"default": "1.0.0",
-					"examples": ["1.0.0"]
+					"examples": [
+						"1.0.0"
+					]
 				},
 				"policyDocuments": {
 					"type": "array",
@@ -97,45 +133,74 @@
 							"statementId": {
 								"type": "string",
 								"description": "The id of the statement",
-								"examples": ["my-statement-id"]
+								"examples": [
+									"my-statement-id"
+								]
 							},
 							"resource": {
 								"type": "string",
 								"description": "The resource of the statement",
-								"examples": ["frn::tenant:<resource>/<id> | *"]
+								"examples": [
+									"frn::tenant:<resource>/<id> | *"
+								]
 							},
 							"action": {
 								"oneOf": [
-									{ "type": "string" },
-									{ "type": "array", "items": { "type": "string" } }
+									{
+										"type": "string"
+									},
+									{
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
 								],
 								"description": "The action of the statement",
-								"examples": ["READ", "WRITE", "INGEST", "FETCH", "*"]
+								"examples": [
+									"READ",
+									"WRITE",
+									"INGEST",
+									"FETCH",
+									"*"
+								]
 							}
 						},
-						"required": ["resource", "action"]
+						"required": [
+							"resource",
+							"action"
+						]
 					}
 				},
 				"description": {
 					"type": "string",
 					"description": "The description of the policy",
-					"examples": ["This is my policy"]
+					"examples": [
+						"This is my policy"
+					]
 				},
 				"principal": {
 					"type": "string",
 					"description": "The principal role that can access the resource",
-					"examples": ["frn::tenant/role/ddbcd838-7b05-4868-96ae-7bdc9a05067c"]
+					"examples": [
+						"frn::tenant/role/ddbcd838-7b05-4868-96ae-7bdc9a05067c"
+					]
 				},
 				"flowcoreManaged": {
 					"type": "boolean",
 					"description": "If the policy is managed by flowcore",
-					"examples": [false, true]
+					"examples": [
+						false,
+						true
+					]
 				}
 			}
 		},
 		"RoleSpec": {
 			"type": "object",
-			"required": ["policies"],
+			"required": [
+				"policies"
+			],
 			"properties": {
 				"policies": {
 					"type": "array",
@@ -151,42 +216,75 @@
 				"flowcoreManaged": {
 					"type": "boolean",
 					"description": "If the role is managed by flowcore",
-					"examples": [false, true]
+					"examples": [
+						false,
+						true
+					]
 				}
 			}
 		},
 		"RoleBindingSpec": {
 			"type": "object",
-			"required": ["role"],
+			"required": [
+				"role"
+			],
 			"properties": {
-				"role": { "type": "string" },
+				"role": {
+					"type": "string"
+				},
 				"subjects": {
 					"type": "array",
 					"items": {
 						"type": "object",
 						"properties": {
-							"type": { "type": "string", "enum": ["user", "key"] },
-							"id": { "type": "string" }
+							"type": {
+								"type": "string",
+								"enum": [
+									"user",
+									"key"
+								]
+							},
+							"id": {
+								"type": "string"
+							}
 						},
-						"required": ["type", "id"]
+						"required": [
+							"type",
+							"id"
+						]
 					}
 				}
 			}
 		},
 		"PolicyBindingSpec": {
 			"type": "object",
-			"required": ["policy"],
+			"required": [
+				"policy"
+			],
 			"properties": {
-				"policy": { "type": "string" },
+				"policy": {
+					"type": "string"
+				},
 				"subjects": {
 					"type": "array",
 					"items": {
 						"type": "object",
 						"properties": {
-							"type": { "type": "string", "enum": ["user", "key"] },
-							"id": { "type": "string" }
+							"type": {
+								"type": "string",
+								"enum": [
+									"user",
+									"key"
+								]
+							},
+							"id": {
+								"type": "string"
+							}
 						},
-						"required": ["type", "id"]
+						"required": [
+							"type",
+							"id"
+						]
 					}
 				}
 			}
