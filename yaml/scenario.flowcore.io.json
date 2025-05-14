@@ -55,17 +55,7 @@
 	"definitions": {
 		"ScenarioSpec": {
 			"type": "object",
-			"required": [
-				"name"
-			],
 			"properties": {
-				"name": {
-					"type": "string",
-					"description": "The name of the scenario (unique for the tenant, alphanumeric, lowercase and dash allowed)",
-					"examples": [
-						"my-scenario"
-					]
-				},
 				"displayName": {
 					"type": "string",
 					"description": "The display name of the scenario",
