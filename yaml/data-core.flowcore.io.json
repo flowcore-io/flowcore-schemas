@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata"
+  ],
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name",
+        "tenant"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the resource"
+        },
+        "tenant": {
+          "type": "string",
+          "description": "The owner of the resource"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "apiVersion": {
+            "const": "datacore.flowcore.io/v1"
+          },
+          "kind": {
+            "const": "DataCore"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "spec": {
+            "$ref": "#/definitions/DataCoreSpec"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "apiVersion": {
+            "const": "datacore.flowcore.io/v1"
+          },
+          "kind": {
+            "const": "FlowType"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "spec": {
+            "$ref": "#/definitions/FlowTypeSpec"
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "DataCoreSpec": {
+      "type": "object",
+      "required": [
+        "accessControl",
+        "deleteProtection"
+      ],
+      "properties": {
+        "accessControl": {
+          "type": "string",
+          "enum": [
+            "private",
+            "public"
+          ],
+          "description": "Access control level for the data core",
+          "examples": [
+            "private",
+            "public"
+          ]
+        },
+        "deleteProtection": {
+          "type": "boolean",
+          "description": "Whether delete protection is enabled for the data core",
+          "examples": [
+            true,
+            false
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the data core",
+          "default": "",
+          "examples": [
+            "Main data core for customer events"
+          ]
+        }
+      }
+    },
+    "FlowTypeSpec": {
+      "type": "object",
+      "required": [
+        "dataCore",
+        "eventTypes"
+      ],
+      "properties": {
+        "dataCore": {
+          "type": "string",
+          "description": "Reference to the data core this flow type belongs to",
+          "examples": [
+            "my-data-core"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the flow type",
+          "default": "",
+          "examples": [
+            "Customer interaction flow"
+          ]
+        },
+        "eventTypes": {
+          "type": "array",
+          "description": "Event types associated with this flow type",
+          "items": {
+            "$ref": "#/definitions/EventType"
+          }
+        }
+      }
+    },
+    "EventType": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the event type",
+          "examples": [
+            "user-created",
+            "order-placed"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the event type",
+          "default": "",
+          "examples": [
+            "Event triggered when a user is created"
+          ]
+        },
+        "sensitiveDataEnabled": {
+          "type": "boolean",
+          "description": "Whether sensitive data handling is enabled for this event type",
+          "default": false,
+          "examples": [
+            true,
+            false
+          ]
+        },
+        "sensitiveDataMask": {
+          "type": "object",
+          "description": "Configuration for sensitive data masking",
+          "required": [
+            "key",
+            "schema"
+          ],
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "Key identifier for the sensitive data mask",
+              "examples": [
+                "email",
+                "ssn"
+              ]
+            },
+            "schema": {
+              "type": "object",
+              "description": "Schema definition for the sensitive data mask",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
